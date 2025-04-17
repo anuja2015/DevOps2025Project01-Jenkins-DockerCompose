@@ -123,17 +123,6 @@ With `NEKO_FILE_TRANSFER_ENABLED=true`:
 <img src="https://raw.githubusercontent.com/m1k1o/neko/master/docs/_media/file-transfer.gif" width="650" height="auto"/>
 </div>
 
-### Why n.eko?
-
-I like cats 🐱 (`Neko` is the Japanese word for cat), I'm a weeb/nerd.
-
-***But why the cat butt?*** Because cats are *assholes*, but you love them anyways.
-
-## Multiple rooms
-
-For n.eko room management software, visit [neko-rooms](https://github.com/m1k1o/neko-rooms).
-
-It also offers zero-knowledge [installation script (with HTTPS and Traefik)](https://github.com/m1k1o/neko-rooms/#zero-knowledge-installation-with-https-and-traefik).
 
 ## Documentation
 
@@ -149,10 +138,3 @@ It also offers zero-knowledge [installation script (with HTTPS and Traefik)](htt
   * [Technologies](https://neko.m1k1o.net/#/technologies)
 * [Changelog](https://neko.m1k1o.net/#/changelog)
 
-## How to contribute? How to build?
-
-Navigate to [.docker](.docker) folder for further information.
-
-## Support
-
-If you want to support this project, you can do it [here](https://github.com/sponsors/m1k1o).
