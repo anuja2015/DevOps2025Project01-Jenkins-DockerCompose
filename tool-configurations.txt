@@ -1,0 +1,74 @@
+
+*******************Install Docker*******************
+
+        sudo apt-get update
+        sudo apt-get install ca-certificates curl
+        sudo install -m 0755 -d /etc/apt/keyrings
+        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+        sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+        echo \
+          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+          $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+            sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+        sudo apt-get update
+
+        sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+        sudo groupadd docker
+        sudo usermod -aG docker $USER
+        newgrp docker
+		exit
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+*******************Install Java jdk 21*******************
+
+sudo apt install openjdk-21-jdk -y
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+********************Jenkins container*******************
+
+docker run -p 8081:8080 -p 50000:50000 -d --name myjenkins -u root -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock armdevu/custom-jenkins:1.0-jdk21
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+******************** Install Jenkins Plugins ********************
+
+SonarQube
+OWASP Dependency check
+Docker
+Docker compose-plugin
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+******************** Tools configuration ********************
+
+docker
+sonarqube
+depenedency check
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+******************** Run SonarQube container and configure ********************
+
+docker run -d -p 9000:9000 --name sonarqube sonarqube:lts-community
+
+initial username:admin
+initial password:admin
+new password: sayonara@123
+
+sqa_76f8f1801108e5e192c054b5327a9bc69442c336
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+******************** Trivy Installation steps ********************
+
+sudo apt-get install wget apt-transport-https gnupg lsb-release
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update
+sudo apt-get install trivy -y
