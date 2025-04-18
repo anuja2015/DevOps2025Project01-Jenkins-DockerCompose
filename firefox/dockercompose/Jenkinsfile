@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
+
+    stages {
+        stage('Git-CheckOut') {
+            steps {
+                git 'https://github.com/anuja2015/DevOps2025Project01-Jenkins-DockerCompose.git'
+            }
+        }
+        stage('OWASP-Depenedency-Check') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableNodeAudit', odcInstallation: 'dependencyCheck'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+        stage('SonarQube-Analysis') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=VirtualBrowser \
+                    -Dsonar.projectName=VirtualBrowser '''
+                }
+            }
+        }
+        stage('Build-and-Tag-Image') {
+            steps {
+                script{
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        dir('/var/jenkins_home/workspace/virtual-browser/.docker/google-chrome/') {
+                            sh 'docker build -t armdevu/virtualbrowser:latest .'
+                        }
+                    }       
+                }
+            }
+        }
+        stage('Trivy-Image-scan') {
+            steps {
+                    sh 'trivy image armdevu/virtualbrowser:latest'
+                
+            }
+        }
+        stage('Push-Docker-Image') {
+            steps {
+                script{
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                            sh 'docker push armdevu/virtualbrowser:latest'
+                    }       
+                }
+            }
+        }
+        stage('Deploy-docker-compose'){
+            steps{
+                sh 'docker compose up -d'
+            }
+        }
+    }
+}
