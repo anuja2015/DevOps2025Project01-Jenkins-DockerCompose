@@ -52,7 +52,9 @@ pipeline {
         }
         stage('Deploy-docker-compose'){
             steps{
-                sh 'docker compose up -d'
+                    dir('/var/jenkins_home/workspace/virtual-browser/chrome/dockercompose/') {
+                        sh 'docker compose up -d'
+                    }
             }
         }
     }
